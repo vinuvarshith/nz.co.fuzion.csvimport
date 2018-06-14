@@ -206,6 +206,7 @@ class CRM_Csvimport_Task_Import {
       $value = strtolower($value);
     }
     $value = explode('|', $value);
+    $value = array_filter($value); // filter empty values
     $valueUpdated = FALSE;
     $isValid = TRUE;
 
@@ -214,7 +215,7 @@ class CRM_Csvimport_Task_Import {
         $isValid = FALSE;
         // check 'label' if 'name' not found
         foreach ($options as $name => $label) {
-          if($mval == $label) {
+          if($mval == $label || ($ignoreCase && strcasecmp($mval, $label) == 0)) {
             $value[$k] = $name;
             $valueUpdated = TRUE;
             $isValid = TRUE;
